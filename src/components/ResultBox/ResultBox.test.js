@@ -88,4 +88,26 @@ describe('Component ResultBox', () => {
       cleanup();
     }
   });
+
+  it('should render proper info about conversion when amount is negative', () => {
+
+    const testCases = [
+      { amount: '-10', from: 'PLN', to: 'PLN' },
+      { amount: '-10', from: 'USD', to: 'PLN' },
+      { amount: '-200', from: 'PLN', to: 'PLN' },
+      { amount: '-200', from: 'PLN', to: 'USD' },
+    ];
+
+    for(const testObj of testCases){
+
+      const { amount, from, to } = testObj;
+      
+      render(<ResultBox from={from} to={to} amount={Number(amount)} />);
+      const output = screen.getByTestId('output');
+      
+      expect(output).toHaveTextContent('Wrong value...');
+
+      cleanup();
+    }
+  });
 });
