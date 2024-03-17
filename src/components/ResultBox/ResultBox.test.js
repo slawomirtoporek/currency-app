@@ -56,4 +56,36 @@ describe('Component ResultBox', () => {
       cleanup();
     }
   });
+
+  it('should render proper info about conversion when USD == PLN', () => {
+
+    const testCases = [
+      { amount: '10', from: 'PLN', to: 'PLN' },
+      { amount: '10', from: 'USD', to: 'USD' },
+      { amount: '200', from: 'PLN', to: 'PLN' },
+      { amount: '200', from: 'USD', to: 'USD' },
+    ];
+
+    for(const testObj of testCases){
+
+      const { amount, from, to } = testObj;
+      
+      render(<ResultBox from={from} to={to} amount={Number(amount)} />);
+      const output = screen.getByTestId('output');
+
+      const currencySymbol = (symbol) => {
+        if(symbol === 'USD'){
+          return '$';
+        } else {
+          return symbol + ' ';
+        }
+      }
+
+      const roundAmount = Number(amount).toFixed(2);
+      
+      expect(output).toHaveTextContent(`${currencySymbol(from)}${roundAmount} = ${currencySymbol(to)}${roundAmount}`);
+
+      cleanup();
+    }
+  });
 });
